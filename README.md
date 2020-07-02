@@ -1,5 +1,5 @@
 # ChatRoomNodeJS
-a simple Chat Room using node js and my sql.
+a simple Chat Room using node js and mysql.
 
 
 Executing guide:
