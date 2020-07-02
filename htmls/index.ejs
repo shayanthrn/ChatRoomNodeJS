@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<style>
+body {
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+  max-height: 25px;
+}
+
+p{
+  margin-block-start: 0px;
+  margin-block-end: 0px;
+}
+
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+div.chat {
+  background-color: lightblue;
+  width: 600px;
+  height: 600px;
+  overflow: scroll;
+}
+
+</style>
+</head>
+<body>
+<h2>Chat Messages</h2>
+<div id="chat" class="chat">
+</div>
+<div>
+  <form action="addmassage" method="POST">
+    <input type="text" name="content"><input type="submit" value="send Massage">
+  </form>
+</div>
+
+<script>
+$(document).ready(function() {
+  $.ajax({
+            type: "GET",
+            url: '/getMassages',
+            data: $(this).serialize(),
+            success: function(response)
+            {
+                $("#chat").empty();
+                for(let i=0;i<response.data.length;i++){
+                  $("#chat").append("<div class='container'><p>"+response.data[i].username+"</p><p>"+response.data[i].content+"</p></div>")
+                }
+                var element = document.getElementById("chat");
+                element.scrollTop = element.scrollHeight;
+           }
+       });
+    setInterval(function(){
+      $.ajax({
+            type: "GET",
+            url: '/getMassages',
+            data: $(this).serialize(),
+            success: function(response)
+            {
+                $("#chat").empty();
+                for(let i=0;i<response.data.length;i++){
+                  $("#chat").append("<div class='container'><p>"+response.data[i].username+"</p><p>"+response.data[i].content+"</p></div>")
+                }
+                var element = document.getElementById("chat");
+                element.scrollTop = element.scrollHeight;
+           }
+       });
+    },2000)  
+});
+</script>
+
+</body>
+</html>
